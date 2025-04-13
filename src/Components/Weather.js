@@ -41,6 +41,11 @@ const Weather = () => {
             const data = await responce.json();
             console.log(data);
 
+            if(!responce.ok){
+                alert(data.message);
+                return
+            }
+
             const icon = allIcons[data.weather[0].icon] || clear_icon;
             setWeatherData({
                 humidity: data.main.humidity,
@@ -51,6 +56,7 @@ const Weather = () => {
             })
         } catch (error) {
             console.log(error)
+            setWeatherData(false);
         }
     }
 
@@ -66,7 +72,8 @@ const Weather = () => {
             <img src={search_icon} alt='' onClick={()=>search(inputRef.current.value)}/>
         </div>
         
-        <img src={weatherData.icon} alt='' className='weather-icon'/>
+        {weatherData?<>
+            <img src={weatherData.icon} alt='' className='weather-icon'/>
         <p className='temperture'>{weatherData.tempreture} C</p>
         <p className='location'>{weatherData.location}</p>
         <div className='weather-data'>
@@ -85,6 +92,8 @@ const Weather = () => {
                 </div>
             </div>
         </div>
+        </>:<><p>Check your api Key : OR enter valid city</p></>}
+        
         
     </div>
   )
